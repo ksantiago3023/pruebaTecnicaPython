@@ -3,8 +3,8 @@ import boto3
 BUCKET = 'archivosred'
 
 class AWS_Servicio:
-    key_id = 'AKIAZFLNJNGOXVY7TRBD'
-    key_secret = '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'
+    key_id = 'Key_ID'
+    key_secret = 'Secret_ID'
 
     def obtener_servicio(self, servicio):
         """Metodo utilizado para obtener un cliente del servicio requerido
