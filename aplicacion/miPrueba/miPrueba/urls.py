@@ -15,8 +15,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from rest_framework.schemas import get_schema_view
+from drf_yasg.views import get_schema_view as get_schema_view2
+from drf_yasg import openapi
+
+schema_view = get_schema_view2(
+   openapi.Info(
+      title="Documentacion API",
+      default_version='v1',
+      description="Swager descripcion del endpoint para subir inventarios",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="kesago23@gmail.com"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+)
+
+schema_url_patterns = [
+    path('inventario/', include('Inventarios.urls')),
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('inventario',include('Inventarios.urls'))
+    path('inventario',include('Inventarios.urls')),
+    path('swager', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc')
 ]

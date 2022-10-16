@@ -1,10 +1,32 @@
-from django.shortcuts import render
-from django.http import HttpResponse,JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from AWS.Cliente import AWS_Servicio
-from .models import Pendientes,Inventario
-from threading import Thread
 import os
+from threading import Thread
+from django.http import HttpResponse,JsonResponse
+from rest_framework.views import APIView
+from django.views.decorators.csrf import csrf_exempt
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from .models import Pendientes,Inventario
+from AWS.Cliente import AWS_Servicio
+
+request_schema_dict = openapi.Schema(
+   title = ("Update order"),
+   type = openapi.TYPE_OBJECT,
+   properties = {
+      'archivo(s)': openapi.Schema(type = openapi.TYPE_FILE, description = ('son los campos que representan el o los fichero(s) adjuntados en la peticion pueden tener cualquier nombre'),
+      example='Hola mundo'),
+      'consecutivo': openapi.Schema(type = openapi.TYPE_STRING, description = ('(Opcional) En caso de requerir actualizar una subida previa'), example = 1, enum = [1, 2, 3, 4, 5,23,58]),
+      'cliente': openapi.Schema(type = openapi.TYPE_STRING, description = ('requerido para especificar el cliente que sube el archivo de inventario'),
+         example = "Cliente1")
+   }
+)
+
+respuesta = {200:'OK archivo(s) procesado(s) correctamente',201:'OK Procesado pero no se subiio ningun fichero valido',
+                500:'Error con algunos de los parametros de ingreso'}
+#
+class Doc(APIView):
+    @swagger_auto_schema(operation_description="descripción del endpoint",responses=respuesta,request_body=request_schema_dict)
+    def post(self,request,format:None):
+        return JsonResponse({})
 
 # Create your views here.
 def index(request):
