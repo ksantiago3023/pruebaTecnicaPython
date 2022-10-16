@@ -1,0 +1,5 @@
+Django
+django-rest-swagger
+psycopg2
+boto3
+pandas
